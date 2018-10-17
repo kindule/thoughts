@@ -115,6 +115,8 @@ Kubernetes环境偶尔出现Statefulset中的Pod被删除新创建的Pod挂载vo
    * 第三步，如果volume中没有pod将说明此worker node中volume不需要挂载，此时执行umountDevice，将global path umount
 3. attach detach controller发现挂载到node节点的volume没有被使用，执行detach操作，将卷从node节点detach，此时卷完全处于集群中未被使用的状态。
 
+### 问题
+
 Controller基于watch机制通过etcd实现状态交互，整个过程似乎完美，那么结合我们遇到的问题，statefulset中Pod被删除会发生什么？
 
 场景一 Pod被删除，volume manager umount，statefulset立即创建Pod，scheduler立即指定Pod到原节点
@@ -127,6 +129,6 @@ Controller基于watch机制通过etcd实现状态交互，整个过程似乎完�
 
 场景三 Pod被删除，volume manager umount/deviceUmount，statefulset创建Pod，scheduler指定Pod到原节点，问题出现
 
-结合出现问题的日志，
+### 总结
 
-总结，Kubernetes之所以在当前成为容器编排领域的事实标准，原因很多，但是对我们来讲基于声明式API的编程范式是我们依赖Kubernetes的重要原因，当然在其解决的问题规模下复杂程度也不言而喻，总之，一句话，没有银弹。
+Kubernetes之所以在当前成为容器编排领域的事实标准，原因很多，但是对我们来讲基于声明式API的编程范式是我们依赖Kubernetes的重要原因，当然在其解决的问题规模下复杂程度也不言而喻，总之，一句话，没有银弹。
